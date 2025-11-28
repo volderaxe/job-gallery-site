@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rhythm of Tap — Services</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0;background:#f8f8f8;color:#333;}
+nav{display:flex;justify-content:space-between;padding:20px 40px;background:#2c3e50;position:sticky;top:0;z-index:999;}
+nav a{color:white;margin-left:20px;text-decoration:none;font-weight:bold;transition:0.3s;}
+nav a.active{color:#ffd54f;text-shadow:0 0 10px #ffd54f;}
+nav a:hover{text-decoration:underline;}
+.container{max-width:1000px;margin:40px auto;padding:0 20px;}
+h1,h2{color:#2c3e50;}
+h1{text-align:center;margin-bottom:40px;}
+.service-card{
+  background:linear-gradient(145deg,#ffffff,#f0f0f0);
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+  margin-bottom:30px;
+  box-shadow:0 8px 15px rgba(0,0,0,0.1);
+  cursor:pointer;
+  transition:0.5s all;
+  transform:translateY(20px);
+  opacity:0;
+}
+.service-card.visible{transform:translateY(0);opacity:1;}
+.service-card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 15px 25px rgba(0,0,0,0.3);}
+.service-card img{width:70px;margin-bottom:15px;transition:transform 0.5s;}
+.service-card:hover img{transform:scale(1.2);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">The Rhythm of Tap</div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="#" onclick="openForm()">Contact</a>
+  </div>
+</nav>
+
+<main class="container">
+  <h1>Our Services</h1>
+
+  <!-- Lawn Maintenance -->
+  <section id="lawn">
+    <div class="service-card">
+      <img src="images/lawn.png" alt="Lawn Maintenance">
+      <h2>Lawn Maintenance</h2>
+      <p>Expert lawn care for a perfectly manicured yard. We handle mowing, edging, fertilization, and seasonal cleanup.</p>
+    </div>
+  </section>
+
+  <!-- Junk Hauling -->
+  <section id="junk">
+    <div class="service-card">
+      <img src="images/junk.png" alt="Junk Hauling">
+      <h2>Junk Hauling</h2>
+      <p>Safe and efficient removal of unwanted items, debris, and yard waste to keep your space clean and organized.</p>
+    </div>
+  </section>
+
+  <!-- Handyman Services -->
+  <section id="handyman">
+    <div class="service-card">
+      <img src="images/handyman.png" alt="Handyman Services">
+      <h2>Handyman Services</h2>
+      <p>From minor repairs to major home improvements, our skilled handymen tackle projects with precision and reliability.</p>
+    </div>
+  </section>
+
+  <!-- Dirt Work -->
+  <section id="dirt">
+    <div class="service-card">
+      <img src="images/dirt.png" alt="Dirt Work">
+      <h2>Dirt Work</h2>
+      <p>Land leveling, excavation, grading, and other earthwork to prepare your outdoor space for construction or landscaping.</p>
+    </div>
+  </section>
+
+  <!-- Parking Lot Repair -->
+  <section id="parking">
+    <div class="service-card">
+      <img src="images/parking.png" alt="Parking Lot Repair">
+      <h2>Parking Lot Repair</h2>
+      <p>Full-service parking lot maintenance including asphalt repair, seal coating, line striping, and pothole filling.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// Animate service cards on scroll
+const cards = document.querySelectorAll('.service-card');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add('visible');
+  });
+},{threshold:0.3});
+cards.forEach(c=>observer.observe(c));
+</script>
+
+</body>
+</html>

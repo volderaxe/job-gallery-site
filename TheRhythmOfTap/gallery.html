@@ -1,0 +1,229 @@
+                 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Completed Job Photos - Masonry Gallery</title>
+<style>
+/* Reset & Basic Styles */
+body {margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#f8f8f8;color:#333;}
+h1 {text-align:center;color:#2c3e50;margin:40px 0;font-size:2.8em;}
+
+/* Filter Bar */
+.filter-bar {display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-bottom:40px;}
+.filter-btn {
+  padding:10px 20px;border:none;border-radius:10px;background:#2c3e50;color:white;cursor:pointer;transition:0.3s;font-weight:bold;
+}
+.filter-btn:hover, .filter-btn.active {background:#ffd54f;color:#2c3e50;}
+
+/* Masonry Grid */
+.gallery-grid {
+  column-count:4;
+  column-gap:20px;
+  padding:0 20px;
+}
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom:20px;
+  position:relative;
+  cursor:pointer;
+  overflow:hidden;
+  border-radius:15px;
+  transition: transform 0.3s, filter 0.3s;
+}
+.gallery-item img {
+  width:100%;
+  display:block;
+  border-radius:15px;
+  transition: transform 0.3s, filter 0.3s;
+}
+.gallery-item:hover img {transform:scale(1.05); filter:brightness(0.8);}
+.gallery-item::after {
+  content:"View";
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  color:white;font-size:1.2em;opacity:0;transition:0.3s;
+}
+.gallery-item:hover::after {opacity:1;}
+
+/* Responsive Columns */
+@media(max-width:1024px){.gallery-grid{column-count:3;}}
+@media(max-width:768px){.gallery-grid{column-count:2;}}
+@media(max-width:480px){.gallery-grid{column-count:1;}}
+
+/* Lightbox */
+#lightbox {
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.95);justify-content:center;align-items:center;
+  z-index:1000;flex-direction:column;text-align:center;
+}
+#lightbox img {max-width:90%;max-height:80%;border-radius:15px;box-shadow:0 0 30px rgba(255,255,255,0.5);}
+#lightbox span.close {position:absolute;top:20px;right:30px;color:white;font-size:2.5em;cursor:pointer;}
+#lightbox span.nav {position:absolute;top:50%;transform:translateY(-50%);font-size:3em;color:white;cursor:pointer;padding:10px;user-select:none;}
+#lightbox span.prev {left:30px;}
+#lightbox span.next {right:30px;}
+#lightbox p.caption {color:white;margin-top:15px;font-size:1.1em;}
+
+/* Load More Button */
+#loadMore {
+  display:block;
+  margin:40px auto;
+  padding:15px 40px;
+  background:#2c3e50;color:white;
+  border:none;border-radius:10px;
+  cursor:pointer;font-size:1.1em;
+  transition:0.3s;
+}
+#loadMore:hover{background:#ffd54f;color:#2c3e50;}
+</style>
+</head>
+<body>
+
+<h1>Completed Job Photos</h1>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">All Projects</button>
+  <button class="filter-btn" data-filter="residential">Residential</button>
+  <button class="filter-btn" data-filter="commercial">Commercial</button>
+  <button class="filter-btn" data-filter="interiors">Interiors</button>
+  <button class="filter-btn" data-filter="exteriors">Exteriors</button>
+</div>
+
+<!-- Masonry Gallery Grid -->
+<div class="gallery-grid" id="galleryGrid">
+  <!-- Example items with varied heights for masonry effect -->
+  <div class="gallery-item" data-category="residential" data-caption="Kitchen Remodel - Project Alpha">
+    <img src="images/project1.jpg" alt="Kitchen Remodel - Project Alpha" loading="lazy">
+  </div>
+  <div class="gallery-item" data-category="commercial" data-caption="Office Lobby - Project Beta">
+    <img src="images/project2.jpg" alt="Office Lobby - Project Beta" loading="lazy">
+  </div>
+  <div class="gallery-item" data-category="interiors" data-caption="Living Room Redesign - Project Gamma">
+    <img src="images/project3.jpg" alt="Living Room Redesign - Project Gamma" loading="lazy">
+  </div>
+  <div class="gallery-item" data-category="exteriors" data-caption="Exterior Painting - Project Delta">
+    <img src="images/project4.jpg" alt="Exterior Painting - Project Delta" loading="lazy">
+  </div>
+  <div class="gallery-item" data-category="residential" data-caption="Bathroom Renovation - Project Epsilon">
+    <img src="images/project5.jpg" alt="Bathroom Renovation - Project Epsilon" loading="lazy">
+  </div>
+  <div class="gallery-item" data-category="commercial" data-caption="Retail Store Layout - Project Zeta">
+    <img src="images/project6.jpg" alt="Retail Store Layout - Project Zeta" loading="lazy">
+  </div>
+  <!-- Add as many items as needed -->
+</div>
+
+<button id="loadMore">Load More</button>
+
+<!-- Lightbox Modal -->
+<div id="lightbox">
+  <span class="close" tabindex="0" onclick="closeLightbox()">&times;</span>
+  <span class="nav prev" tabindex="0">&#10094;</span>
+  <span class="nav next" tabindex="0">&#10095;</span>
+  <img src="" alt="">
+  <p class="caption"></p>
+</div>
+
+<script>
+// =====================
+// Filtering
+// =====================
+const filterButtons = document.querySelectorAll('.filter-btn');
+const galleryItems = document.querySelectorAll('.gallery-item');
+
+filterButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    galleryItems.forEach(item => {
+      if(filter === 'all' || item.dataset.category === filter){
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    refreshVisibleItems();
+    updateGalleryDisplay();
+  });
+});
+
+// =====================
+// Load More
+// =====================
+let itemsToShow = 8;
+const loadMoreBtn = document.getElementById('loadMore');
+
+function updateGalleryDisplay() {
+  const visibleItems = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+  visibleItems.forEach((item, i) => {
+    if(i < itemsToShow) item.style.display = 'block';
+    else item.style.display = 'none';
+  });
+  if(itemsToShow >= visibleItems.length) loadMoreBtn.style.display = 'none';
+  else loadMoreBtn.style.display = 'block';
+}
+updateGalleryDisplay();
+
+loadMoreBtn.addEventListener('click', () => {
+  itemsToShow += 8;
+  updateGalleryDisplay();
+});
+
+// =====================
+// Lightbox
+// =====================
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = lightbox.querySelector('img');
+const caption = lightbox.querySelector('.caption');
+let currentIndex = 0;
+let visibleGalleryItems = [];
+
+function openLightbox(index) {
+  currentIndex = index;
+  const item = visibleGalleryItems[currentIndex];
+  lightboxImg.src = item.querySelector('img').src;
+  lightboxImg.alt = item.querySelector('img').alt;
+  caption.textContent = item.dataset.caption;
+  lightbox.style.display = 'flex';
+}
+
+function refreshVisibleItems(){
+  visibleGalleryItems = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+}
+refreshVisibleItems();
+
+galleryItems.forEach((item,i) => {
+  item.addEventListener('click', () => {
+    refreshVisibleItems();
+    const index = visibleGalleryItems.indexOf(item);
+    if(index !== -1) openLightbox(index);
+  });
+});
+
+// Close Lightbox
+function closeLightbox(){lightbox.style.display='none';}
+
+// Navigation
+lightbox.querySelector('.prev').addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + visibleGalleryItems.length) % visibleGalleryItems.length;
+  openLightbox(currentIndex);
+});
+lightbox.querySelector('.next').addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % visibleGalleryItems.length;
+  openLightbox(currentIndex);
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if(lightbox.style.display === 'flex'){
+    if(e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % visibleGalleryItems.length; openLightbox(currentIndex);}
+    if(e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + visibleGalleryItems.length) % visibleGalleryItems.length; openLightbox(currentIndex);}
+    if(e.key === 'Escape') {closeLightbox();}
+  }
+});
+</script>
+
+</body>
+</html>
