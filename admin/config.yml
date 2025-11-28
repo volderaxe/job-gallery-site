@@ -1,4 +1,17 @@
 backend:
   name: github
-  repo: YOUR_GITHUB_USERNAME/YOUR_REPO_NAME
-  branch: main # or master
+  repo: volderaxe/job-gallery-site  # replace with your GitHub repo
+  branch: main  # or master
+
+media_folder: "images/uploads"    # folder in your repo for uploaded files
+public_folder: "/images/uploads"  # folder path used in HTML
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    folder: ""           # root folder for your HTML pages
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
