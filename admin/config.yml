@@ -1,7 +1,7 @@
 backend:
   name: github
-  repo: volderaxe/job-gallery-site  # replace with your GitHub repo
-  branch: main  # or master
+  repo: volderaxe/job-gallery-site  # your GitHub repo
+  branch: main  # or master depending on your repo
 
 media_folder: "images/uploads"    # folder in your repo for uploaded files
 public_folder: "/images/uploads"  # folder path used in HTML
