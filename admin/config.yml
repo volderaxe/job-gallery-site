@@ -1,15 +1,14 @@
+# Local test backend configuration
 backend:
-  name: github
-  repo: volderaxe/job-gallery-site  # your GitHub repo
-  branch: main  # or master depending on your repo
+  name: test-repo
 
-media_folder: "images/uploads"    # folder in your repo for uploaded files
-public_folder: "/images/uploads"  # folder path used in HTML
+media_folder: "images/uploads"    # where uploaded images are stored locally
+public_folder: "/images/uploads"  # path used in HTML
 
 collections:
   - name: "pages"
     label: "Pages"
-    folder: ""           # root folder for your HTML pages
+    folder: "content/pages"        # a local folder for editable content
     create: true
     slug: "{{slug}}"
     fields:
